@@ -1,5 +1,12 @@
+import { PomodoroManager } from "./components/pomodoro-manager";
+import { DashboardLayout } from "./layouts/dashboard";
+
 function App() {
-  return <h1 className="text-3xl font-extrabold underline">Pomodoro Timer</h1>;
+  return (
+    <DashboardLayout>
+      <PomodoroManager />
+    </DashboardLayout>
+  );
 }
 
 export default App;
