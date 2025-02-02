@@ -70,7 +70,7 @@ function validateTheme(value: unknown): value is Theme {
 }
 
 export function saveTheme(nextTheme: Theme) {
-  window.localStorage.setItem(STORAGE_KETYS.THEME, JSON.stringify(nextTheme));
+  window.localStorage.setItem(STORAGE_KETYS.THEME, nextTheme);
 }
 
 export function loadTheme(): Theme {
