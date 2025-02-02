@@ -1,4 +1,4 @@
-import { SessionType } from "@/types";
+import { SessionType, type Session } from "@/types";
 import { formatTime } from "@/utils";
 import { useEffect, useState } from "react";
 import { SessionActions } from "./session-actions";
@@ -17,33 +17,39 @@ import {
 import { Tabs, TabsList, TabsTrigger } from "./ui/tabs";
 
 export function PomodoroManager() {
-  const [currentSession, setCurrentSession] = useState<SessionType>("pomodoro");
-  const [isRunning, setIsRunning] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(25 * 60);
+  const [currentSession, setCurrentSession] = useState<Session>({
+    type: "pomodoro",
+    hasStarted: false,
+    isRunning: false,
+    timeLeft: 25 * 60,
+  });
 
   useEffect(() => {
-    const emoji = currentSession === "pomodoro" ? "🍅" : "☕";
-    document.title = `${formatTime(timeLeft)} ${emoji} - Pomodoro Timer`;
-  }, [currentSession, timeLeft]);
+    const emoji = currentSession.type === "pomodoro" ? "🍅" : "☕";
+    document.title = `${formatTime(currentSession.timeLeft)} ${emoji} - Pomodoro Timer`;
+  }, [currentSession.timeLeft, currentSession.type]);
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
 
-    if (isRunning && timeLeft > 0) {
+    if (currentSession.isRunning && currentSession.timeLeft > 0) {
       // Start the timer, count down every second
       timer = setInterval(() => {
-        setTimeLeft((timeLeft) => timeLeft - 1);
+        setCurrentSession((currentSession) => ({
+          ...currentSession,
+          timeLeft: currentSession.timeLeft - 1,
+        }));
       }, 1000);
-    } else if (timeLeft === 0 && isRunning) {
+    } else if (currentSession.timeLeft === 0 && currentSession.isRunning) {
       // Timer is complete, calling `handleSessionChange` will stop the timer
 
-      if (currentSession === "pomodoro") {
+      if (currentSession.type === "pomodoro") {
         // TODO: play pomodoro sound
         // TODO: set session cound
 
         // Switch to break session
-        const nextSession: SessionType = "short-break";
-        handleSessionChange(nextSession);
+        const nextSessionType: SessionType = "short-break";
+        handleSessionChange(nextSessionType);
       } else {
         // Break (short/long) completed
         // TODO: play break complete sound
@@ -52,39 +58,60 @@ export function PomodoroManager() {
     }
 
     return () => clearInterval(timer);
-  }, [currentSession, isRunning, timeLeft]);
+  }, [currentSession.isRunning, currentSession.timeLeft, currentSession.type]);
 
-  function handleSessionChange(nextSession: SessionType) {
-    setIsRunning(false);
-    setCurrentSession(nextSession);
+  function handleSessionChange(nextSessionType: SessionType) {
+    let timeLeft: Session["timeLeft"];
 
     // Set appropriate time for the session
-    switch (nextSession) {
+    switch (nextSessionType) {
       case "short-break": {
-        setTimeLeft(5 * 60);
+        timeLeft = 5 * 60;
         break;
       }
       case "long-break": {
-        setTimeLeft(15 * 60);
+        timeLeft = 15 * 60;
         break;
       }
       case "pomodoro":
       default: {
-        setTimeLeft(25 * 60);
+        timeLeft = 25 * 60;
         break;
       }
     }
+
+    setCurrentSession({
+      type: nextSessionType,
+      hasStarted: false,
+      isRunning: false,
+      timeLeft,
+      createdAt: undefined,
+      completedAt: undefined,
+    });
+  }
+
+  function startTimer() {
+    // TODO: play button click sound
+    setCurrentSession((currentSession) => ({
+      ...currentSession,
+      hasStarted: true,
+      isRunning: true,
+      createdAt: new Date(),
+    }));
   }
 
   function toggleTimer() {
     // TODO: play button click sound
-    setIsRunning((isRunning) => !isRunning);
+    // setIsRunning((isRunning) => !isRunning);
+    setCurrentSession((currentSession) => ({
+      ...currentSession,
+      isRunning: !currentSession.isRunning,
+    }));
   }
 
   function resetTimer() {
     // TODO: play button click sound
-    setIsRunning(false);
-    handleSessionChange(currentSession);
+    handleSessionChange(currentSession.type);
   }
 
   return (
@@ -92,7 +119,7 @@ export function PomodoroManager() {
       <div className="flex flex-col gap-2">
         <Tabs
           defaultValue="pomodoro"
-          value={currentSession}
+          value={currentSession.type}
           onValueChange={(value) => handleSessionChange(value as SessionType)}
         >
           <TabsList className="grid w-full grid-cols-3">
@@ -103,11 +130,13 @@ export function PomodoroManager() {
         </Tabs>
         <Card>
           <CardContent className="flex flex-col items-center gap-4 p-6">
-            <TimerDisplay timeLeft={timeLeft} />
+            <TimerDisplay timeLeft={currentSession.timeLeft} />
           </CardContent>
           <CardFooter>
             <TimerActions
-              isRunning={isRunning}
+              hasStarted={currentSession.hasStarted}
+              isRunning={currentSession.isRunning}
+              onStart={startTimer}
               onToggle={toggleTimer}
               onReset={resetTimer}
             />

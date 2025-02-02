@@ -7,3 +7,12 @@
  * - "long-break": Break session (default 15 mins).
  */
 export type SessionType = "pomodoro" | "short-break" | "long-break";
+
+export interface Session {
+  type: SessionType;
+  hasStarted: boolean;
+  isRunning: boolean;
+  timeLeft: number;
+  createdAt?: Date;
+  completedAt?: Date;
+}
