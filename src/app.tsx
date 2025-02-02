@@ -2,7 +2,7 @@ import { ThemeProvider } from "./components/theme-provider";
 import { TooltipProvider } from "./components/ui/tooltip";
 import { Dashboard } from "./layouts/dashboard";
 
-function App() {
+export function App() {
   return (
     <TooltipProvider>
       <ThemeProvider>
@@ -11,5 +11,3 @@ function App() {
     </TooltipProvider>
   );
 }
-
-export default App;
