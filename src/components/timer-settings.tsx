@@ -14,6 +14,7 @@ import { useState, type ChangeEvent, type FormEvent } from "react";
 import { Button } from "./ui/button";
 import { Label } from "./ui/label";
 import { Slider } from "./ui/slider";
+import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 
 export function TimerSettings({
   settings,
@@ -76,16 +77,18 @@ export function TimerSettings({
 
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-      <DialogTrigger asChild>
-        <Button
-          variant="ghost"
-          size="icon"
-          className="size-7"
-          aria-label="Timer settings"
-        >
-          <Settings2Icon aria-hidden />
-        </Button>
-      </DialogTrigger>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <DialogTrigger asChild>
+            <Button variant="ghost" size="icon" className="size-7">
+              <Settings2Icon aria-hidden />
+            </Button>
+          </DialogTrigger>
+        </TooltipTrigger>
+        <TooltipContent>
+          <p>Timer settings</p>
+        </TooltipContent>
+      </Tooltip>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Timer Settings</DialogTitle>

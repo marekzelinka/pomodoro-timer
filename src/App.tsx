@@ -1,7 +1,12 @@
-import { DashboardLayout } from "./layouts/dashboard";
+import { TooltipProvider } from "./components/ui/tooltip";
+import { Dashboard } from "./layouts/dashboard";
 
 function App() {
-  return <DashboardLayout></DashboardLayout>;
+  return (
+    <TooltipProvider>
+      <Dashboard />
+    </TooltipProvider>
+  );
 }
 
 export default App;

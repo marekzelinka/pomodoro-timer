@@ -1,5 +1,11 @@
 import { Trash2Icon } from "lucide-react";
 import { Button } from "./ui/button";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "./ui/tooltip";
 
 export function SessionActions({
   completedSessionsCount,
@@ -9,15 +15,24 @@ export function SessionActions({
   onClear: () => void;
 }) {
   return (
-    <Button
-      disabled={completedSessionsCount === 0}
-      variant="destructive"
-      size="icon"
-      onClick={onClear}
-      className="size-7"
-      aria-label="Clear pomodoros for today"
-    >
-      <Trash2Icon aria-hidden />
-    </Button>
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Button
+            type="button"
+            variant="destructive"
+            size="icon"
+            disabled={completedSessionsCount === 0}
+            onClick={onClear}
+            className="size-7"
+          >
+            <Trash2Icon aria-hidden />
+          </Button>
+        </TooltipTrigger>
+        <TooltipContent>
+          <p>Clear pomodoros for today</p>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   );
 }

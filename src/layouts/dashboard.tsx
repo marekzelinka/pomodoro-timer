@@ -6,7 +6,7 @@ import { loadTimerSettings, saveTimerSettings } from "@/lib/storage";
 import { AlarmClockIcon } from "lucide-react";
 import { useState } from "react";
 
-export function DashboardLayout() {
+export function Dashboard() {
   const [timerSettings, setTimerSettings] = useState(() => loadTimerSettings());
 
   function updateTimerSettings(nextSettings: typeof timerSettings) {
