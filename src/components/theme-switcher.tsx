@@ -42,7 +42,7 @@ export function ThemeSwitcher() {
           <DropdownMenuItem
             key={option.name}
             onClick={() => setTheme(option.name as Theme)}
-            className="aria-selected:bg-accent"
+            className="aria-selected:text-primary"
             aria-selected={option.name === theme}
           >
             <option.icon aria-hidden />
