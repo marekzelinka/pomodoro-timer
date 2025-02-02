@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/dialog";
 import { DEFAULT_TIMER_SETTINGS } from "@/lib/storage";
 import type { TimerSettings } from "@/types";
-import { SettingsIcon } from "lucide-react";
+import { Settings2Icon } from "lucide-react";
 import { useState, type ChangeEvent, type FormEvent } from "react";
 import { Button } from "./ui/button";
 import { Label } from "./ui/label";
@@ -81,9 +81,9 @@ export function TimerSettings({
           variant="ghost"
           size="icon"
           className="size-7"
-          aria-label="Settings"
+          aria-label="Timer settings"
         >
-          <SettingsIcon aria-hidden />
+          <Settings2Icon aria-hidden />
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
