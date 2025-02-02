@@ -13,7 +13,7 @@ export const DEFAULT_TIMER_SETTINGS: TimerSettings = {
 };
 
 export function saveTimerSettings(timerSettings: TimerSettings) {
-  localStorage.setItem(
+  window.localStorage.setItem(
     STORAGE_KETYS.TIMER_SETTINGS,
     JSON.stringify(timerSettings),
   );
@@ -22,7 +22,7 @@ export function saveTimerSettings(timerSettings: TimerSettings) {
 export function loadTimerSettings(): TimerSettings {
   try {
     const storedValue =
-      localStorage.getItem(STORAGE_KETYS.TIMER_SETTINGS) ?? "";
+      window.localStorage.getItem(STORAGE_KETYS.TIMER_SETTINGS) ?? "";
 
     const timerSettings = JSON.parse(storedValue) as TimerSettings;
     if (!timerSettings) {
@@ -36,7 +36,7 @@ export function loadTimerSettings(): TimerSettings {
 }
 
 export function saveCompletedSessions(completedSessions: CompletedSession[]) {
-  localStorage.setItem(
+  window.localStorage.setItem(
     STORAGE_KETYS.COMPLETED_SESSIONS,
     JSON.stringify(completedSessions),
   );
@@ -45,7 +45,7 @@ export function saveCompletedSessions(completedSessions: CompletedSession[]) {
 export function loadCompletedSessions(): CompletedSession[] {
   try {
     const storedValue =
-      localStorage.getItem(STORAGE_KETYS.COMPLETED_SESSIONS) ?? "";
+      window.localStorage.getItem(STORAGE_KETYS.COMPLETED_SESSIONS) ?? "";
 
     const completedSessions = JSON.parse(storedValue) as CompletedSession[];
     if (!completedSessions) {
@@ -70,11 +70,11 @@ function validateTheme(value: unknown): value is Theme {
 }
 
 export function saveTheme(nextTheme: Theme) {
-  localStorage.setItem(STORAGE_KETYS.THEME, JSON.stringify(nextTheme));
+  window.localStorage.setItem(STORAGE_KETYS.THEME, JSON.stringify(nextTheme));
 }
 
 export function loadTheme(): Theme {
-  const storedValue = localStorage.getItem(STORAGE_KETYS.THEME) ?? "";
+  const storedValue = window.localStorage.getItem(STORAGE_KETYS.THEME) ?? "";
   if (validateTheme(storedValue)) {
     return storedValue;
   }

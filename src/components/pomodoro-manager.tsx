@@ -96,11 +96,11 @@ export function PomodoroManager({
   );
 
   useEffect(() => {
-    let timer: NodeJS.Timeout;
+    let timer: number;
 
     if (currentSession.isRunning && currentSession.timeLeft > 0) {
       // Start the timer, count down every second
-      timer = setInterval(() => {
+      timer = window.setInterval(() => {
         setCurrentSession((currentSession) => ({
           ...currentSession,
           timeLeft: currentSession.timeLeft - 1,
@@ -129,7 +129,7 @@ export function PomodoroManager({
       }
     }
 
-    return () => clearInterval(timer);
+    return () => window.clearInterval(timer);
   }, [completedSessions, currentSession, playDoneSound, resetCurrentSession]);
 
   function clearCompletedSessions() {
