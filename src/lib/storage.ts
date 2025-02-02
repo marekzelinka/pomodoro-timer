@@ -1,8 +1,9 @@
-import type { CompletedSession, TimerSettings } from "@/types";
+import type { CompletedSession, Theme, TimerSettings } from "@/types";
 
 const STORAGE_KETYS = {
   TIMER_SETTINGS: "timerSettings",
   COMPLETED_SESSIONS: "completedSessions",
+  THEME: "theme",
 };
 
 export const DEFAULT_TIMER_SETTINGS: TimerSettings = {
@@ -60,4 +61,23 @@ export function loadCompletedSessions(): CompletedSession[] {
   } catch {
     return [];
   }
+}
+
+const DEFAULT_THEME: Theme = "system";
+
+function validateTheme(value: unknown): value is Theme {
+  return value === "system" || value === "light" || value === "dark";
+}
+
+export function saveTheme(nextTheme: Theme) {
+  localStorage.setItem(STORAGE_KETYS.THEME, JSON.stringify(nextTheme));
+}
+
+export function loadTheme(): Theme {
+  const storedValue = localStorage.getItem(STORAGE_KETYS.THEME) ?? "";
+  if (validateTheme(storedValue)) {
+    return storedValue;
+  }
+
+  return DEFAULT_THEME;
 }

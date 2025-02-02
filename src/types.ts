@@ -1,5 +1,14 @@
 /**
- * Types for our timer state
+ * Represents the available theme options for the application.
+ *
+ * - "system": Follows the system's color scheme, but defaults to light if JavaScript is disabled.
+ * - "light": Applies the light color scheme.
+ * - "dark": Applies the dark color scheme.
+ */
+export type Theme = "system" | "light" | "dark";
+
+/**
+ * Represents timer types.
  */
 export interface TimerSettings {
   pomodoroDuration: number;
