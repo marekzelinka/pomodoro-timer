@@ -1,5 +1,7 @@
+import { formatTime, isSameDay } from "@/lib/dates";
+import { completeSession } from "@/lib/sessions";
+import { loadCompletedSessions, saveCompletedSessions } from "@/lib/storage";
 import type { CompletedSession, Session, SessionType } from "@/types";
-import { completeSession, formatTime, isSameDay } from "@/utils";
 import { useEffect, useState } from "react";
 import { SessionActions } from "./session-actions";
 import { SessionTracker } from "./session-tracker";
@@ -23,10 +25,11 @@ export function PomodoroManager() {
     isRunning: false,
     timeLeft: 0.1 * 60,
   });
+
   // TODO: Get saved sessions from localStorage
   const [completedSessions, setCompletedSessions] = useState<
     CompletedSession[]
-  >([]);
+  >(() => loadCompletedSessions());
   const completedSessionsToday = completedSessions.filter((session) =>
     isSameDay(session.completedAt, new Date()),
   );
@@ -56,11 +59,11 @@ export function PomodoroManager() {
 
         const completedSession = completeSession(currentSession);
         const nextSessionsCompleted = [...completedSessions, completedSession];
-        // TODO: Save completed sessions to localStorage
+        saveCompletedSessions(nextSessionsCompleted);
         setCompletedSessions(nextSessionsCompleted);
 
         // Switch to break session after 4 pomodoro sessions
-        const nextSessionType: SessionType =
+        const nextSessionType =
           nextSessionsCompleted.length % 4 === 0 ? "long-break" : "short-break";
         resetCurrentSession(nextSessionType);
       } else {
@@ -74,11 +77,13 @@ export function PomodoroManager() {
   }, [currentSession, completedSessions]);
 
   function clearCompletedSessions() {
-    setCompletedSessions([]);
+    const nextSessionsCompleted: CompletedSession[] = [];
+    saveCompletedSessions(nextSessionsCompleted);
+    setCompletedSessions(nextSessionsCompleted);
   }
 
   function resetCurrentSession(nextSessionType: SessionType) {
-    let timeLeft: Session["timeLeft"];
+    let timeLeft: number;
 
     // Set appropriate time for the session
     switch (nextSessionType) {

@@ -1,4 +1,4 @@
-import { formatTime } from "@/utils";
+import { formatTime } from "@/lib/dates";
 
 export function TimerDisplay({ timeLeft }: { timeLeft: number }) {
   return (
