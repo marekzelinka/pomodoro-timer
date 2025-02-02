@@ -46,6 +46,7 @@ export function TimerActions({
         variant="outline"
         onClick={onReset}
         className="w-full"
+        disabled={!hasStarted}
       >
         <HistoryIcon aria-hidden />
         Reset
