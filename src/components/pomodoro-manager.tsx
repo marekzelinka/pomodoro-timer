@@ -1,6 +1,8 @@
 import { formatTime, isSameDay } from "@/lib/dates";
 import { completeSession } from "@/lib/sessions";
 import { loadCompletedSessions, saveCompletedSessions } from "@/lib/storage";
+import buttonClickSfx from "@/sounds/button-click.mp3";
+import notificationSfx from "@/sounds/notification.mp3";
 import type {
   CompletedSession,
   Session,
@@ -8,6 +10,7 @@ import type {
   TimerSettings,
 } from "@/types";
 import { useCallback, useEffect, useState } from "react";
+import { useSound } from "use-sound";
 import { SessionActions } from "./session-actions";
 import { SessionTracker } from "./session-tracker";
 import { TimerActions } from "./timer-actions";
@@ -28,6 +31,9 @@ export function PomodoroManager({
 }: {
   timerSettings: TimerSettings;
 }) {
+  const [playButtonClickSound] = useSound(buttonClickSfx);
+  const [playDoneSound] = useSound(notificationSfx);
+
   const [currentSession, setCurrentSession] = useState<Session>({
     type: "pomodoro",
     hasStarted: false,
@@ -105,7 +111,7 @@ export function PomodoroManager({
 
       if (currentSession.type === "pomodoro") {
         // Work (pomodoro) session completed
-        // TODO: play pomodoro sound
+        playDoneSound();
 
         const completedSession = completeSession(currentSession);
         const nextSessionsCompleted = [...completedSessions, completedSession];
@@ -118,13 +124,13 @@ export function PomodoroManager({
         resetCurrentSession(nextSessionType);
       } else {
         // Break completed
-        // TODO: play break complete sound
+        playDoneSound();
         resetCurrentSession("pomodoro");
       }
     }
 
     return () => clearInterval(timer);
-  }, [completedSessions, currentSession, resetCurrentSession]);
+  }, [completedSessions, currentSession, playDoneSound, resetCurrentSession]);
 
   function clearCompletedSessions() {
     const nextSessionsCompleted: CompletedSession[] = [];
@@ -133,7 +139,7 @@ export function PomodoroManager({
   }
 
   function startTimer() {
-    // TODO: play button click sound
+    playButtonClickSound();
     setCurrentSession((currentSession) => ({
       ...currentSession,
       hasStarted: true,
@@ -143,7 +149,7 @@ export function PomodoroManager({
   }
 
   function toggleTimer() {
-    // TODO: play button click sound
+    playButtonClickSound();
     setCurrentSession((currentSession) => ({
       ...currentSession,
       isRunning: !currentSession.isRunning,
@@ -151,7 +157,7 @@ export function PomodoroManager({
   }
 
   function resetTimer() {
-    // TODO: play button click sound
+    playButtonClickSound();
     resetCurrentSession(currentSession.type);
   }
 
