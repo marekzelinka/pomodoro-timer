@@ -19,8 +19,8 @@ export function Dashboard() {
       <div className="flex w-full max-w-[400px] flex-col gap-6">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2 font-medium">
-            <div className="bg-primary text-primary-foreground flex size-5 items-center justify-center rounded-md">
-              <AlarmClockIcon className="size-3" aria-hidden />
+            <div className="bg-primary text-primary-foreground flex size-6 items-center justify-center rounded-md">
+              <AlarmClockIcon className="size-4" aria-hidden />
             </div>
             Pomodoro Timer
           </div>
