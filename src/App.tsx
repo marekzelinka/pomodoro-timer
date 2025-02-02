@@ -1,12 +1,7 @@
-import { PomodoroManager } from "./components/pomodoro-manager";
 import { DashboardLayout } from "./layouts/dashboard";
 
 function App() {
-  return (
-    <DashboardLayout>
-      <PomodoroManager />
-    </DashboardLayout>
-  );
+  return <DashboardLayout></DashboardLayout>;
 }
 
 export default App;

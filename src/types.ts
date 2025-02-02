@@ -1,4 +1,13 @@
 /**
+ * Types for our timer state
+ */
+export interface TimerSettings {
+  pomodoroDuration: number;
+  shortBreakDuration: number;
+  longBreakDuration: number;
+}
+
+/**
  * Represents the current timer session.
  *
  * - "pomodoro": Work session (default 25 mins).

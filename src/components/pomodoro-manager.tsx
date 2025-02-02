@@ -1,8 +1,13 @@
 import { formatTime, isSameDay } from "@/lib/dates";
 import { completeSession } from "@/lib/sessions";
 import { loadCompletedSessions, saveCompletedSessions } from "@/lib/storage";
-import type { CompletedSession, Session, SessionType } from "@/types";
-import { useEffect, useState } from "react";
+import type {
+  CompletedSession,
+  Session,
+  SessionType,
+  TimerSettings,
+} from "@/types";
+import { useCallback, useEffect, useState } from "react";
 import { SessionActions } from "./session-actions";
 import { SessionTracker } from "./session-tracker";
 import { TimerActions } from "./timer-actions";
@@ -18,18 +23,21 @@ import {
 } from "./ui/card";
 import { Tabs, TabsList, TabsTrigger } from "./ui/tabs";
 
-export function PomodoroManager() {
+export function PomodoroManager({
+  timerSettings,
+}: {
+  timerSettings: TimerSettings;
+}) {
   const [currentSession, setCurrentSession] = useState<Session>({
     type: "pomodoro",
     hasStarted: false,
     isRunning: false,
-    timeLeft: 0.1 * 60,
+    timeLeft: timerSettings.pomodoroDuration,
   });
 
-  // TODO: Get saved sessions from localStorage
-  const [completedSessions, setCompletedSessions] = useState<
-    CompletedSession[]
-  >(() => loadCompletedSessions());
+  const [completedSessions, setCompletedSessions] = useState(() =>
+    loadCompletedSessions(),
+  );
   const completedSessionsToday = completedSessions.filter((session) =>
     isSameDay(session.completedAt, new Date()),
   );
@@ -38,6 +46,48 @@ export function PomodoroManager() {
     const emoji = currentSession.type === "pomodoro" ? "🍅" : "☕";
     document.title = `${formatTime(currentSession.timeLeft)} ${emoji} - Pomodoro Timer`;
   }, [currentSession.timeLeft, currentSession.type]);
+
+  useEffect(() => {
+    resetCurrentSession(currentSession.type);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [timerSettings]);
+
+  const resetCurrentSession = useCallback(
+    (nextSessionType: SessionType) => {
+      let timeLeft: number;
+
+      // Set appropriate time for the session
+      switch (nextSessionType) {
+        case "short-break": {
+          timeLeft = timerSettings.shortBreakDuration;
+          break;
+        }
+        case "long-break": {
+          timeLeft = timerSettings.longBreakDuration;
+          break;
+        }
+        case "pomodoro":
+        default: {
+          timeLeft = timerSettings.pomodoroDuration;
+          break;
+        }
+      }
+
+      setCurrentSession({
+        type: nextSessionType,
+        hasStarted: false,
+        isRunning: false,
+        timeLeft,
+        createdAt: undefined,
+        completedAt: undefined,
+      });
+    },
+    [
+      timerSettings.longBreakDuration,
+      timerSettings.pomodoroDuration,
+      timerSettings.shortBreakDuration,
+    ],
+  );
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
@@ -74,42 +124,12 @@ export function PomodoroManager() {
     }
 
     return () => clearInterval(timer);
-  }, [currentSession, completedSessions]);
+  }, [completedSessions, currentSession, resetCurrentSession]);
 
   function clearCompletedSessions() {
     const nextSessionsCompleted: CompletedSession[] = [];
     saveCompletedSessions(nextSessionsCompleted);
     setCompletedSessions(nextSessionsCompleted);
-  }
-
-  function resetCurrentSession(nextSessionType: SessionType) {
-    let timeLeft: number;
-
-    // Set appropriate time for the session
-    switch (nextSessionType) {
-      case "short-break": {
-        timeLeft = 5 * 60;
-        break;
-      }
-      case "long-break": {
-        timeLeft = 15 * 60;
-        break;
-      }
-      case "pomodoro":
-      default: {
-        timeLeft = 0.1 * 60;
-        break;
-      }
-    }
-
-    setCurrentSession({
-      type: nextSessionType,
-      hasStarted: false,
-      isRunning: false,
-      timeLeft,
-      createdAt: undefined,
-      completedAt: undefined,
-    });
   }
 
   function startTimer() {

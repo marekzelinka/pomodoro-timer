@@ -1,10 +1,19 @@
-import { PomodoroSettings } from "@/components/pomodoro-settings";
+import { PomodoroManager } from "@/components/pomodoro-manager";
 import { ThemeSwitcher } from "@/components/theme-switcher";
+import { TimerSettings } from "@/components/timer-settings";
 import { Separator } from "@/components/ui/separator";
+import { loadTimerSettings, saveTimerSettings } from "@/lib/storage";
 import { AlarmClockIcon } from "lucide-react";
-import type { ReactNode } from "react";
+import { useState } from "react";
 
-export function DashboardLayout({ children }: { children: ReactNode }) {
+export function DashboardLayout() {
+  const [timerSettings, setTimerSettings] = useState(() => loadTimerSettings());
+
+  function updateTimerSettings(nextSettings: typeof timerSettings) {
+    setTimerSettings(nextSettings);
+    saveTimerSettings(nextSettings);
+  }
+
   return (
     <div className="bg-muted/40 flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10">
       <div className="flex w-full max-w-[400px] flex-col gap-6">
@@ -18,10 +27,13 @@ export function DashboardLayout({ children }: { children: ReactNode }) {
           <div className="flex items-center gap-2">
             <ThemeSwitcher />
             <Separator orientation="vertical" className="h-4" />
-            <PomodoroSettings />
+            <TimerSettings
+              settings={timerSettings}
+              onUpdate={updateTimerSettings}
+            />
           </div>
         </div>
-        {children}
+        <PomodoroManager timerSettings={timerSettings} />
       </div>
     </div>
   );
