@@ -26,7 +26,7 @@ export function Dashboard() {
           </div>
           <div className="flex items-center gap-2">
             <ThemeSwitcher />
-            <Separator orientation="vertical" className="h-4" />
+            <Separator orientation="vertical" className="h-3" />
             <TimerSettings
               settings={timerSettings}
               onUpdate={updateTimerSettings}
