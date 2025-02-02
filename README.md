@@ -1,50 +1,32 @@
-# React + TypeScript + Vite
+# Pomodoro Timer
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This project helps you stay productive with customizable work and break timers, session tracking, and sound notifications.
 
-Currently, two official plugins are available:
+## Get started
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+1. Clone the repository:
 
-## Expanding the ESLint configuration
+   ```sh
+   git clone https://github.com/marekzelinka/pomodoro-timer.git
+   ```
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+2. Install the dependencies:
 
-- Configure the top-level `parserOptions` property like this:
+   ```sh
+   pnpm i
+   ```
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ["./tsconfig.node.json", "./tsconfig.app.json"],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-});
-```
+3. Run the application in dev mode:
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+   ```sh
+   pnpm dev
+   ```
 
-```js
-// eslint.config.js
-import react from "eslint-plugin-react";
+## Goals
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: "18.3" } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs["jsx-runtime"].rules,
-  },
-});
-```
+Practice working with JavaScript timers, `localStorage` and [shadcn/ui](https://ui.shadcn.com/).
+
+## Credits
+
+- [pomodoro-timer by mrkkvnsndvl](https://github.com/mrkkvnsndvl/pomodoro-timer/tree/main)
+- [daily.place](https://www.daily.place/)
