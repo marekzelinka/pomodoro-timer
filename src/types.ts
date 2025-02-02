@@ -1,4 +1,3 @@
-// Type for different session types
 /**
  * Represents the current timer session.
  *
@@ -16,3 +15,8 @@ export interface Session {
   createdAt?: Date;
   completedAt?: Date;
 }
+
+export type CompletedSession = Omit<Session, "createdAt" | "completedAt"> & {
+  createdAt: Date;
+  completedAt: Date;
+};

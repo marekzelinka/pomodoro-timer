@@ -1,5 +1,5 @@
-import { SessionType, type Session } from "@/types";
-import { formatTime } from "@/utils";
+import type { CompletedSession, Session, SessionType } from "@/types";
+import { completeSession, formatTime, isSameDay } from "@/utils";
 import { useEffect, useState } from "react";
 import { SessionActions } from "./session-actions";
 import { SessionTracker } from "./session-tracker";
@@ -21,8 +21,15 @@ export function PomodoroManager() {
     type: "pomodoro",
     hasStarted: false,
     isRunning: false,
-    timeLeft: 25 * 60,
+    timeLeft: 0.1 * 60,
   });
+  // TODO: Get saved sessions from localStorage
+  const [completedSessions, setCompletedSessions] = useState<
+    CompletedSession[]
+  >([]);
+  const completedSessionsToday = completedSessions.filter((session) =>
+    isSameDay(session.completedAt, new Date()),
+  );
 
   useEffect(() => {
     const emoji = currentSession.type === "pomodoro" ? "🍅" : "☕";
@@ -44,23 +51,33 @@ export function PomodoroManager() {
       // Timer is complete, calling `handleSessionChange` will stop the timer
 
       if (currentSession.type === "pomodoro") {
+        // Work (pomodoro) session completed
         // TODO: play pomodoro sound
-        // TODO: set session cound
 
-        // Switch to break session
-        const nextSessionType: SessionType = "short-break";
-        handleSessionChange(nextSessionType);
+        const completedSession = completeSession(currentSession);
+        const nextSessionsCompleted = [...completedSessions, completedSession];
+        // TODO: Save completed sessions to localStorage
+        setCompletedSessions(nextSessionsCompleted);
+
+        // Switch to break session after 4 pomodoro sessions
+        const nextSessionType: SessionType =
+          nextSessionsCompleted.length % 4 === 0 ? "long-break" : "short-break";
+        resetCurrentSession(nextSessionType);
       } else {
-        // Break (short/long) completed
+        // Break completed
         // TODO: play break complete sound
-        handleSessionChange("pomodoro");
+        resetCurrentSession("pomodoro");
       }
     }
 
     return () => clearInterval(timer);
-  }, [currentSession.isRunning, currentSession.timeLeft, currentSession.type]);
+  }, [currentSession, completedSessions]);
 
-  function handleSessionChange(nextSessionType: SessionType) {
+  function clearCompletedSessions() {
+    setCompletedSessions([]);
+  }
+
+  function resetCurrentSession(nextSessionType: SessionType) {
     let timeLeft: Session["timeLeft"];
 
     // Set appropriate time for the session
@@ -75,7 +92,7 @@ export function PomodoroManager() {
       }
       case "pomodoro":
       default: {
-        timeLeft = 25 * 60;
+        timeLeft = 0.1 * 60;
         break;
       }
     }
@@ -102,7 +119,6 @@ export function PomodoroManager() {
 
   function toggleTimer() {
     // TODO: play button click sound
-    // setIsRunning((isRunning) => !isRunning);
     setCurrentSession((currentSession) => ({
       ...currentSession,
       isRunning: !currentSession.isRunning,
@@ -111,7 +127,7 @@ export function PomodoroManager() {
 
   function resetTimer() {
     // TODO: play button click sound
-    handleSessionChange(currentSession.type);
+    resetCurrentSession(currentSession.type);
   }
 
   return (
@@ -120,7 +136,7 @@ export function PomodoroManager() {
         <Tabs
           defaultValue="pomodoro"
           value={currentSession.type}
-          onValueChange={(value) => handleSessionChange(value as SessionType)}
+          onValueChange={(value) => resetCurrentSession(value as SessionType)}
         >
           <TabsList className="grid w-full grid-cols-3">
             <TabsTrigger value="pomodoro">Pomodoro</TabsTrigger>
@@ -148,13 +164,23 @@ export function PomodoroManager() {
           <div className="space-y-1.5">
             <CardTitle>Sessions</CardTitle>
             <CardDescription>
-              <Badge variant="secondary">1</Badge> completed today
+              <Badge variant="secondary">{completedSessionsToday.length}</Badge>{" "}
+              completed today
             </CardDescription>
           </div>
-          <SessionActions />
+          <SessionActions
+            completedSessionsCount={completedSessions.length}
+            onClear={clearCompletedSessions}
+          />
         </CardHeader>
         <CardContent>
-          <SessionTracker />
+          {completedSessions.length ? (
+            <SessionTracker sessions={completedSessions} />
+          ) : (
+            <div className="flex h-32 flex-col items-center justify-center">
+              <p className="text-muted-foreground text-sm">No sessions yet!</p>
+            </div>
+          )}
         </CardContent>
       </Card>
     </div>
