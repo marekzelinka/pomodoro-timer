@@ -4,7 +4,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import {
   forwardRef,
   type ComponentPropsWithoutRef,
-  type ElementRef,
+  type ComponentRef,
 } from "react";
 
 export const labelVariants = cva(
@@ -12,7 +12,7 @@ export const labelVariants = cva(
 );
 
 export const Label = forwardRef<
-  ElementRef<typeof LabelPrimitive.Root>,
+  ComponentRef<typeof LabelPrimitive.Root>,
   ComponentPropsWithoutRef<typeof LabelPrimitive.Root> &
     VariantProps<typeof labelVariants>
 >(({ className, ...props }, ref) => (

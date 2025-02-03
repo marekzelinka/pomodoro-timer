@@ -45,36 +45,6 @@ export function TimerSettings({
     onUpdate(nextSettings);
   }
 
-  const settingsFields: {
-    id: keyof TimerSettings;
-    label: string;
-    min: number;
-    max: number;
-    value: number;
-  }[] = [
-    {
-      id: "pomodoroDuration",
-      label: "Pomodoro time",
-      min: 1,
-      max: 60,
-      value: settings.pomodoroDuration / 60,
-    },
-    {
-      id: "shortBreakDuration",
-      label: "Short break time",
-      min: 1,
-      max: 15,
-      value: settings.shortBreakDuration / 60,
-    },
-    {
-      id: "longBreakDuration",
-      label: "Long break time",
-      min: 1,
-      max: 30,
-      value: settings.longBreakDuration / 60,
-    },
-  ];
-
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <Tooltip>
@@ -104,7 +74,29 @@ export function TimerSettings({
             onReset={handleFormReset}
           >
             <div className="space-y-6">
-              {settingsFields.map((props) => (
+              {[
+                {
+                  id: "pomodoroDuration",
+                  label: "Pomodoro time",
+                  min: 1,
+                  max: 60,
+                  value: settings.pomodoroDuration / 60,
+                },
+                {
+                  id: "shortBreakDuration",
+                  label: "Short break time",
+                  min: 1,
+                  max: 15,
+                  value: settings.shortBreakDuration / 60,
+                },
+                {
+                  id: "longBreakDuration",
+                  label: "Long break time",
+                  min: 1,
+                  max: 30,
+                  value: settings.longBreakDuration / 60,
+                },
+              ].map((props) => (
                 <div key={props.id} className="space-y-4">
                   <div className="flex justify-between">
                     <Label htmlFor={props.id}>{props.label}</Label>

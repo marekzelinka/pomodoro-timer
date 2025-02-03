@@ -4,7 +4,7 @@ import { XIcon } from "lucide-react";
 import {
   forwardRef,
   type ComponentPropsWithoutRef,
-  type ElementRef,
+  type ComponentRef,
   type HTMLAttributes,
 } from "react";
 
@@ -17,7 +17,7 @@ export const DialogPortal = DialogPrimitive.Portal;
 export const DialogClose = DialogPrimitive.Close;
 
 export const DialogOverlay = forwardRef<
-  ElementRef<typeof DialogPrimitive.Overlay>,
+  ComponentRef<typeof DialogPrimitive.Overlay>,
   ComponentPropsWithoutRef<typeof DialogPrimitive.Overlay>
 >(({ className, ...props }, ref) => (
   <DialogPrimitive.Overlay
@@ -32,7 +32,7 @@ export const DialogOverlay = forwardRef<
 DialogOverlay.displayName = DialogPrimitive.Overlay.displayName;
 
 export const DialogContent = forwardRef<
-  ElementRef<typeof DialogPrimitive.Content>,
+  ComponentRef<typeof DialogPrimitive.Content>,
   ComponentPropsWithoutRef<typeof DialogPrimitive.Content>
 >(({ className, children, ...props }, ref) => (
   <DialogPortal>
@@ -87,7 +87,7 @@ export function DialogFooter({
 DialogFooter.displayName = "DialogFooter";
 
 export const DialogTitle = forwardRef<
-  ElementRef<typeof DialogPrimitive.Title>,
+  ComponentRef<typeof DialogPrimitive.Title>,
   ComponentPropsWithoutRef<typeof DialogPrimitive.Title>
 >(({ className, ...props }, ref) => (
   <DialogPrimitive.Title
@@ -102,7 +102,7 @@ export const DialogTitle = forwardRef<
 DialogTitle.displayName = DialogPrimitive.Title.displayName;
 
 export const DialogDescription = forwardRef<
-  ElementRef<typeof DialogPrimitive.Description>,
+  ComponentRef<typeof DialogPrimitive.Description>,
   ComponentPropsWithoutRef<typeof DialogPrimitive.Description>
 >(({ className, ...props }, ref) => (
   <DialogPrimitive.Description

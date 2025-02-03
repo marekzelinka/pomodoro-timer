@@ -1,4 +1,3 @@
-/* eslint-disable react-refresh/only-export-components */
 import { loadTheme, saveTheme } from "@/lib/storage";
 import type { Theme } from "@/types";
 import {
