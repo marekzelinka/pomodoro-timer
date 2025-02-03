@@ -9,32 +9,37 @@ const dateFormatter = new Intl.DateTimeFormat("en-GB", {
   year: "numeric",
   hour: "numeric",
   minute: "numeric",
+  second: "numeric",
   hour12: true,
   timeZone: "UTC",
 });
 
 export function SessionTracker({ sessions }: { sessions: CompletedSession[] }) {
+  const sortedSessions = [...sessions].sort(
+    (a, b) => b.completedAt.getTime() - a.completedAt.getTime(),
+  );
+
   return (
     <ScrollArea className="h-32">
-      {sessions.map((session, index) => (
+      {sortedSessions.map((session, index) => (
         <Fragment key={index}>
           <div className="text-muted-foreground space-y-1 text-xs">
             <p>
               Completed at{" "}
               <time
-                dateTime={session.createdAt.toISOString()}
+                dateTime={session.completedAt.toISOString()}
                 className="text-foreground"
               >
-                {dateFormatter.format(session.createdAt)}
+                {dateFormatter.format(session.completedAt)}
               </time>
             </p>
             <p>
               Started at{" "}
               <time
-                dateTime={session.completedAt.toISOString()}
+                dateTime={session.createdAt.toISOString()}
                 className="text-foreground"
               >
-                {dateFormatter.format(session.completedAt)}
+                {dateFormatter.format(session.createdAt)}
               </time>
             </p>
           </div>
