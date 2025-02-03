@@ -1,6 +1,7 @@
 import { formatTime, isSameDay } from "@/lib/dates";
 import { completeSession } from "@/lib/sessions";
 import { loadCompletedSessions, saveCompletedSessions } from "@/lib/storage";
+import { dismissToasts, showTimerDoneToast } from "@/lib/toasts";
 import buttonClickSfx from "@/sounds/button-click.mp3";
 import notificationSfx from "@/sounds/notification.mp3";
 import type {
@@ -60,6 +61,8 @@ export function PomodoroManager({
 
   const resetCurrentSession = useCallback(
     (nextSessionType: SessionType) => {
+      dismissToasts();
+
       let timeLeft: number;
 
       // Set appropriate time for the session
@@ -112,6 +115,7 @@ export function PomodoroManager({
       if (currentSession.type === "pomodoro") {
         // Work (pomodoro) session completed
         playDoneSound();
+        showTimerDoneToast(currentSession.type);
 
         const completedSession = completeSession(currentSession);
         const nextSessionsCompleted = [...completedSessions, completedSession];
@@ -125,6 +129,7 @@ export function PomodoroManager({
       } else {
         // Break completed
         playDoneSound();
+        showTimerDoneToast(currentSession.type);
         resetCurrentSession("pomodoro");
       }
     }
