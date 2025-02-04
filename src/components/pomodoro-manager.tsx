@@ -45,9 +45,9 @@ export function PomodoroManager({
   const [completedSessions, setCompletedSessions] = useState(() =>
     loadCompletedSessions(),
   );
-  const completedSessionsToday = completedSessions.filter((session) =>
+  const completedSessionsTodayCount = completedSessions.filter((session) =>
     isSameDay(session.completedAt, new Date()),
-  );
+  ).length;
 
   useEffect(() => {
     const emoji = currentSession.type === "pomodoro" ? "🍅" : "☕";
@@ -202,7 +202,7 @@ export function PomodoroManager({
           <div className="space-y-1.5">
             <CardTitle>Sessions</CardTitle>
             <CardDescription>
-              <Badge variant="secondary">{completedSessionsToday.length}</Badge>{" "}
+              <Badge variant="secondary">{completedSessionsTodayCount}</Badge>{" "}
               completed today
             </CardDescription>
           </div>
