@@ -8,16 +8,17 @@ const timerMessage: Record<SessionType, string> = {
   "long-break": "Long break time is over",
 };
 
+const DEFAULT_DURATION = 10_000;
+
 export function showTimerDoneToast(type: SessionType) {
   const message = timerMessage[type];
   toast(message, {
     icon: <AlarmClockCheckIcon className="text-primary" />,
     closeButton: true,
-    duration: Infinity,
+    duration: DEFAULT_DURATION,
   });
 }
 
 export function dismissToasts() {
-  console.log("here");
   toast.dismiss();
 }
