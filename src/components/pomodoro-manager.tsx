@@ -144,6 +144,7 @@ export function PomodoroManager({
   }
 
   function startTimer() {
+    dismissToasts();
     playButtonClickSound();
     setCurrentSession((currentSession) => ({
       ...currentSession,
@@ -162,6 +163,7 @@ export function PomodoroManager({
   }
 
   function resetTimer() {
+    dismissToasts();
     playButtonClickSound();
     resetCurrentSession(currentSession.type);
   }
