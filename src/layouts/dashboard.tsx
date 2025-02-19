@@ -1,4 +1,5 @@
 import { PomodoroManager } from "@/components/pomodoro-manager";
+import { ShortcutsDialog } from "@/components/shortcuts-dialog";
 import { ThemeSwitcher } from "@/components/theme-switcher";
 import { TimerSettings } from "@/components/timer-settings";
 import { Separator } from "@/components/ui/separator";
@@ -26,6 +27,8 @@ export function Dashboard() {
           </div>
           <div className="flex items-center gap-2">
             <ThemeSwitcher />
+            <Separator orientation="vertical" className="h-3" />
+            <ShortcutsDialog />
             <Separator orientation="vertical" className="h-3" />
             <TimerSettings
               settings={timerSettings}
