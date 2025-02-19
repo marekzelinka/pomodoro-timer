@@ -18,31 +18,35 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 
 export function TimerSettings({
   settings,
-  onUpdate,
+  onSubmit,
 }: {
   settings: TimerSettings;
-  onUpdate: (nextSettings: TimerSettings) => void;
+  onSubmit: (nextSettings: TimerSettings) => void;
 }) {
+  const [localSettings, setLocalSettings] = useState(settings);
+
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   function handleFormSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     setIsDialogOpen(false);
+
+    onSubmit(localSettings);
   }
 
-  const isFormTouched =
-    JSON.stringify(settings) !== JSON.stringify(DEFAULT_TIMER_SETTINGS);
+  const isFormDirty =
+    JSON.stringify(localSettings) !== JSON.stringify(DEFAULT_TIMER_SETTINGS);
 
   function handleFormReset() {
-    onUpdate(DEFAULT_TIMER_SETTINGS);
+    setLocalSettings(DEFAULT_TIMER_SETTINGS);
   }
 
   function handleFormFieldChange(event: ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
 
-    const nextSettings = { ...settings, [name]: Number(value) * 60 };
-    onUpdate(nextSettings);
+    const nextSettings = { ...localSettings, [name]: Number(value) * 60 };
+    setLocalSettings(nextSettings);
   }
 
   return (
@@ -80,21 +84,21 @@ export function TimerSettings({
                   label: "Pomodoro time",
                   min: 1,
                   max: 60,
-                  value: settings.pomodoroDuration / 60,
+                  value: localSettings.pomodoroDuration / 60,
                 },
                 {
                   id: "shortBreakDuration",
                   label: "Short break time",
                   min: 1,
                   max: 15,
-                  value: settings.shortBreakDuration / 60,
+                  value: localSettings.shortBreakDuration / 60,
                 },
                 {
                   id: "longBreakDuration",
                   label: "Long break time",
                   min: 1,
                   max: 30,
-                  value: settings.longBreakDuration / 60,
+                  value: localSettings.longBreakDuration / 60,
                 },
               ].map((props) => (
                 <div key={props.id} className="space-y-4">
@@ -130,10 +134,10 @@ export function TimerSettings({
         </div>
         <DialogFooter>
           <Button
-            form="timer-settings"
             type="reset"
+            form="timer-settings"
             variant="outline"
-            disabled={!isFormTouched}
+            disabled={!isFormDirty}
           >
             Reset defaults
           </Button>
