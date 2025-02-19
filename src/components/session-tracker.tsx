@@ -43,7 +43,7 @@ export function SessionTracker({ sessions }: { sessions: CompletedSession[] }) {
               <Separator className="bg-destructive/20" />
             </div>
             <div className="relative flex justify-start">
-              <span className="text-destructive bg-white pr-2">
+              <span className="bg-white pr-2 text-destructive">
                 Older than today
               </span>
             </div>
@@ -65,7 +65,7 @@ function SessionList({ items }: { items: CompletedSession[] }) {
 
     return (
       <Fragment key={index}>
-        <div className="text-muted-foreground space-y-1">
+        <div className="space-y-1 text-muted-foreground">
           <p>
             Completed at{" "}
             <time

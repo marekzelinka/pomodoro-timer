@@ -216,7 +216,7 @@ export function PomodoroManager({
             <SessionTracker sessions={completedSessions} />
           ) : (
             <div className="flex h-32 flex-col items-center justify-center">
-              <p className="text-muted-foreground text-sm">No sessions yet!</p>
+              <p className="text-sm text-muted-foreground">No sessions yet!</p>
             </div>
           )}
         </CardContent>
