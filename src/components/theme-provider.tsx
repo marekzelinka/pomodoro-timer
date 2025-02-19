@@ -1,12 +1,6 @@
 import { loadTheme, saveTheme } from "@/lib/storage";
 import type { Theme } from "@/types";
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-  type ReactNode,
-} from "react";
+import { createContext, use, useEffect, useState, type ReactNode } from "react";
 
 interface ThemeProviderState {
   theme: Theme;
@@ -18,7 +12,7 @@ const ThemeProviderContext = createContext<ThemeProviderState | undefined>(
 );
 
 export const useTheme = () => {
-  const context = useContext(ThemeProviderContext);
+  const context = use(ThemeProviderContext);
   if (context === undefined) {
     throw new Error("useTheme must be used within a ThemeProvider");
   }
@@ -66,9 +60,5 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     },
   };
 
-  return (
-    <ThemeProviderContext.Provider value={value}>
-      {children}
-    </ThemeProviderContext.Provider>
-  );
+  return <ThemeProviderContext value={value}>{children}</ThemeProviderContext>;
 }

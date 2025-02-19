@@ -9,10 +9,10 @@ import {
 
 export function SessionActions({
   completedSessionsCount,
-  onClear,
+  onClearCompletedSessions,
 }: {
   completedSessionsCount: number;
-  onClear: () => void;
+  onClearCompletedSessions: () => void;
 }) {
   return (
     <TooltipProvider>
@@ -23,7 +23,7 @@ export function SessionActions({
             variant="destructive"
             size="icon"
             disabled={completedSessionsCount === 0}
-            onClick={onClear}
+            onClick={onClearCompletedSessions}
             className="size-7"
           >
             <Trash2Icon aria-hidden />

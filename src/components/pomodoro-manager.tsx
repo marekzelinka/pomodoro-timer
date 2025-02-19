@@ -115,6 +115,7 @@ export function PomodoroManager({
       if (currentSession.type === "pomodoro") {
         // Work (pomodoro) session completed
         playDoneSound();
+
         showTimerDoneToast(currentSession.type);
 
         const completedSession = completeSession(currentSession);
@@ -129,6 +130,7 @@ export function PomodoroManager({
       } else {
         // Break completed
         playDoneSound();
+
         showTimerDoneToast(currentSession.type);
         resetCurrentSession("pomodoro");
       }
@@ -145,7 +147,9 @@ export function PomodoroManager({
 
   function startTimer() {
     dismissToasts();
+
     playButtonClickSound();
+
     setCurrentSession((currentSession) => ({
       ...currentSession,
       hasStarted: true,
@@ -156,6 +160,7 @@ export function PomodoroManager({
 
   function toggleTimer() {
     playButtonClickSound();
+
     setCurrentSession((currentSession) => ({
       ...currentSession,
       isRunning: !currentSession.isRunning,
@@ -164,7 +169,9 @@ export function PomodoroManager({
 
   function resetTimer() {
     dismissToasts();
+
     playButtonClickSound();
+
     resetCurrentSession(currentSession.type);
   }
 
@@ -208,7 +215,7 @@ export function PomodoroManager({
           </div>
           <SessionActions
             completedSessionsCount={completedSessions.length}
-            onClear={clearCompletedSessions}
+            onClearCompletedSessions={clearCompletedSessions}
           />
         </CardHeader>
         <CardContent>
@@ -216,7 +223,7 @@ export function PomodoroManager({
             <SessionTracker sessions={completedSessions} />
           ) : (
             <div className="flex h-32 flex-col items-center justify-center">
-              <p className="text-sm text-muted-foreground">No sessions yet!</p>
+              <p className="text-muted-foreground text-sm">No sessions yet!</p>
             </div>
           )}
         </CardContent>
