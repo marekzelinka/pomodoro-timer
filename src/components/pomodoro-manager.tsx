@@ -11,6 +11,7 @@ import type {
   TimerSettings,
 } from "@/types";
 import { useCallback, useEffect, useState } from "react";
+import { useHotkeys } from "react-hotkeys-hook";
 import { useSound } from "use-sound";
 import { SessionActions } from "./session-actions";
 import { SessionTracker } from "./session-tracker";
@@ -175,6 +176,41 @@ export function PomodoroManager({
     resetCurrentSession(currentSession.type);
   }
 
+  // Setup keyboard shortcuts
+  useHotkeys(
+    "ctrl+p",
+    () => {
+      if (currentSession.hasStarted) {
+        toggleTimer();
+      } else {
+        startTimer();
+      }
+    },
+    {
+      // By default ctrl+p opens print screen
+      preventDefault: true,
+    },
+  );
+  useHotkeys(
+    "ctrl+r",
+    () => {
+      resetCurrentSession(currentSession.type);
+    },
+    {
+      // By default ctrl+r reloads page
+      preventDefault: true,
+    },
+  );
+  useHotkeys("ctrl+alt+1", () => {
+    resetCurrentSession("pomodoro");
+  });
+  useHotkeys("ctrl+alt+2", () => {
+    resetCurrentSession("short-break");
+  });
+  useHotkeys("ctrl+alt+3", () => {
+    resetCurrentSession("long-break");
+  });
+
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-col gap-2">
@@ -223,7 +259,7 @@ export function PomodoroManager({
             <SessionTracker sessions={completedSessions} />
           ) : (
             <div className="flex h-32 flex-col items-center justify-center">
-              <p className="text-muted-foreground text-sm">No sessions yet!</p>
+              <p className="text-sm text-muted-foreground">No sessions yet!</p>
             </div>
           )}
         </CardContent>

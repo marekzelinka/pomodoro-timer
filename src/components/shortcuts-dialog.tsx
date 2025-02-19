@@ -48,15 +48,23 @@ export function ShortcutsDialog() {
           <TableBody>
             <TableRow>
               <TableCell>
-                <kbd className="bg-muted pointer-events-none h-5 items-center rounded border px-1.5 py-1 font-mono text-[10px] font-medium tracking-widest select-none">
+                <kbd className="pointer-events-none h-5 items-center rounded border bg-muted px-1.5 py-1 font-mono text-[10px] font-medium tracking-widest select-none">
                   ⌘/Ctrl + P
                 </kbd>
               </TableCell>
-              <TableCell>Play/Pause selected timer</TableCell>
+              <TableCell>Play/Pause timer</TableCell>
             </TableRow>
             <TableRow>
               <TableCell>
-                <kbd className="bg-muted pointer-events-none h-5 items-center rounded border px-1.5 py-1 font-mono text-[10px] font-medium tracking-widest select-none">
+                <kbd className="pointer-events-none h-5 items-center rounded border bg-muted px-1.5 py-1 font-mono text-[10px] font-medium tracking-widest select-none">
+                  ⌘/Ctrl + R
+                </kbd>
+              </TableCell>
+              <TableCell>Reset timer (if started)</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell>
+                <kbd className="pointer-events-none h-5 items-center rounded border bg-muted px-1.5 py-1 font-mono text-[10px] font-medium tracking-widest select-none">
                   ⌘/Ctrl + Alt + 1
                 </kbd>
               </TableCell>
@@ -64,7 +72,7 @@ export function ShortcutsDialog() {
             </TableRow>
             <TableRow>
               <TableCell>
-                <kbd className="bg-muted pointer-events-none h-5 items-center rounded border px-1.5 py-1 font-mono text-[10px] font-medium tracking-widest select-none">
+                <kbd className="pointer-events-none h-5 items-center rounded border bg-muted px-1.5 py-1 font-mono text-[10px] font-medium tracking-widest select-none">
                   ⌘/Ctrl + Alt + 2
                 </kbd>
               </TableCell>
@@ -72,7 +80,7 @@ export function ShortcutsDialog() {
             </TableRow>
             <TableRow>
               <TableCell>
-                <kbd className="bg-muted pointer-events-none h-5 items-center rounded border px-1.5 py-1 font-mono text-[10px] font-medium tracking-widest select-none">
+                <kbd className="pointer-events-none h-5 items-center rounded border bg-muted px-1.5 py-1 font-mono text-[10px] font-medium tracking-widest select-none">
                   ⌘/Ctrl + Alt + 3
                 </kbd>
               </TableCell>
